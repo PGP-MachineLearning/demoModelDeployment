@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Demo para clasificar flores IRIS <br> usando modelo creado en Google Colab y ejecutado con TensorFlow.js & Apps Script</h1>
+        <p>Basado en: <a href="https://nithanaroy.medium.com/securely-deploy-your-tensorflow-js-model-via-google-app-script-f1254843445d"
+                target="_blank">Securely deploy your Tensorflow JS model via Google App Script [Nitin Pasumarthy, 2020]</a> 
+
+        </p>
+        <br>
+        <div class="form-inline">
+            <div class="form-group">
+                <span class="mr-2">-Datos Ejemplo:</span>
+                <br>  Largo Sépalo:  <input type="number" class="form-control" id="inp1" value="5.0"/>
+                <br>  Ancho Sépalo:  <input type="number" class="form-control" id="inp2" value="3.6" />
+                <br>  Largo Pétalo:  <input type="number" class="form-control" id="inp3" value="1.4"/>
+                <br>  Ancho Pétalo:  <input type="number" class="form-control" id="inp4" value="0.2" />
+                <button type="button" onclick="clasificarEjemplo()">Clasificar</button>
+                <br> 
+                <span class="mx-2">-Resultado Modelo:</span> <span id="resultText"></span>
+                <br> <br> <br>
+                <span class="mr-2">-Probar Modelo:</span>
+                <br>
+                <textarea id="datosPrueba" cols="40" rows="5"></textarea>
+                <button type="button" onclick="probarModelo()">Probar modelo</button>
+                <button type="button" onclick="limpiarDatos()">Limpiar datos</button>
+                <br>
+                <span id="resultPrueba"></span>
+                <br> <br> <br>
+                 <span class="mx-3">-Mensajes:</span>
+                <br>
+                <span id="logText"></span>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.1.0/dist/tf.min.js"></script>
+        <script>
+
+            let model = null;
+            let logText = document.getElementById("logText")
+            let resText = document.getElementById("resultText")
+            let resPrueba = document.getElementById("resultPrueba")
+
+            // funciones auxiliares para mostrar log
+            function mostrarFailure(error) {
+                console.error(error);
+                showAlert( "\n\tERROR: "+ msg + "\n" );
+            }
+
+            function showAlert(msg, mostrarUsuario=false) {
+                console.info(msg);
+                if (mostrarUsuario) {
+                  logText.innerText = logText.innerText + "\t" + msg + "\n"
+                }                
+            }
+
+            // función para cargar modelo desde Drive
+            async function loadModel() {
+                if (model == null) {
+                  google.script.run.withSuccessHandler(async modelFiles => {
+                      showAlert("Cargando modelo...", true)
+                      const modelJson = new File([modelFiles[0]], "model.json", { type: "application/json" })
+                      //showAlert(modelFiles[0])
+                      const modelWeights = new File([Uint8Array.from(modelFiles[1])], "group1-shard1of1.bin")
+                      //showAlert(modelFiles[1])
+                      model = await tf.loadLayersModel(tf.io.browserFiles([modelJson, modelWeights]))
+                      model.summary();
+                      if (model != null) {
+                        showAlert("Modelo cargado.", true);                           
+                      }
+                  }).withFailureHandler((error) => {
+                      mostrarFailure(error);
+                      }).loadModelFromDrive();
+                }
+            }
+
+            // función para ejecutar modelo cargado con los datos
+            function executeModel(ml, x, xLength) {     
+                // ejecuta modelo                                         
+                const yHat = ml.predict([tf.tensor(x).reshape([1, xLength])]);
+                return yHat.dataSync();
+            }
+
+            // función auxiliar para determinar Id cuando salida es softmax
+            function indexOfMax(arr) {
+                if (arr.length === 0) {
+                    return -1;
+                }
+                var max = arr[0];
+                var maxIndex = 0;
+                for (var i = 1; i < arr.length; i++) {
+                    if (arr[i] > max) {
+                        maxIndex = i;
+                        max = arr[i];
+                    }
+                }
+                return maxIndex;
+            }
+
+
+            // función para realizar la clasificación, ejecutando el modelo y formateando el resultado
+            function clasificarIris(datosModel) {
+              if (model != null) {  
+                  // ejecuta modelo
+                  const resModel = executeModel(model, datosModel, 4);
+                  // muestra resultados
+                  showAlert( "Clasificar: [" + datosModel + "] -> [" + resModel + "]");                  
+                  if (resModel != null) {
+                    if (resModel.length == 1) {
+                        // usa salida lineal (devuelve id de clase que se debe redondear)
+                        claseID = Math.round(resModel);
+                    }
+                    else {
+                      // usa salida softmax (devuelve valores por clase, se tiene que usar más grande)
+                      claseID = indexOfMax(resModel);
+                    }
+                    return claseID;
+                  }
+              } else {
+                  // el modelo todavía no está listo para usar
+                  showAlert("Se está cargando el modelo, pruebe de nuevo en un ratito...", true);
+                  return null;
+              }
+            }
+
+            // función para calcular las métricas de eficiencia, precisión y recuperación
+            function calcMetricasClasificacion(cantOK, cantMAL, matrizConf) {
+              let res = ""
+              // calcula eficiencia
+              let eff = ( cantOK / (cantOK+cantMAL) ) * 100.0;
+              res = res + "-- Cant. OK: " + cantOK + " / Cant. MAL: " + cantMAL + "\n";
+              res = res + "-- Eficiencia General = " + Math.round(eff) + "%\n"; 
+              // calcula precisión y recuperación por clase
+              res = res + "--Métricas por Clase (precisión / recuperación): \n";
+              for (var clase in matrizConf) {
+                cantVPa = 0.0;
+                cantVPb = 0.0;
+                cantFN = 0.0;
+                cantFP = 0.0;
+                // calcula precisión
+                for (var claseR in matrizConf) {
+                  if (claseR == clase) {
+                    cantVPa += matrizConf[claseR][clase];
+                  } else {
+                    if (clase in matrizConf[claseR]) {
+                      cantFP += matrizConf[claseR][clase];
+                    }
+                  }
+                }       
+                prec = cantVPa * 100.0 /  (cantVPa + cantFP);            
+                // calcula recuperación                
+                for (var claseM in matrizConf[clase]) {
+                  if (claseM == clase) {
+                    cantVPb += matrizConf[clase][claseM];
+                  } else {
+                    cantFN += matrizConf[clase][claseM];
+                  }
+                }              
+                recl = cantVPb * 100.0 /  (cantVPb + cantFN);
+                // muestra
+                if (cantVPa != cantVPb) {
+                  mostrarFailure("Aborta por error al calcular VP para clase " + clase +":" + cantVPa + " / " + cantVPb + "!");
+                  return res;
+                }                  
+                res = res + "      clase " + clase + ": P = " + Math.round(prec, 2) + "% / R = " + Math.round(recl, 2) + "%\n";
+              }
+              return res;
+            }
+
+            // determina clase iris en base a la salida del modelo
+            function clasificarEjemplo() {
+              // define datos de entrada
+              const x = [ parseFloat(document.getElementById("inp1").value), parseFloat(document.getElementById("inp2").value), parseFloat(document.getElementById("inp3").value), parseFloat(document.getElementById("inp4").value) ];     
+              const claseID = clasificarIris(x);
+              if (claseID != null) {
+                resText.innerText = "--> Clase " + claseID
+              }
+            }
+
+            // función para limpiar datos de probar modelo
+            function limpiarDatos() {
+              document.getElementById("datosPrueba").value = ""
+              resPrueba.innerText = ""
+            }
+
+            // función para probar modelo
+            function probarModelo() {
+              showAlert("Comienza a probar modelo...", true)
+              const datos = document.getElementById("datosPrueba").value;
+              const lines = datos.split('\n');
+              let linesRes = ""
+              let resOK = ""
+              let cantOK = 0
+              let cantMAL = 0
+              let matrizConf = {}              
+              for(var i = 0; i < lines.length; i++){ 
+                if (lines[i]!="") {
+                  let valores = lines[i].split(";");
+                  if ( isNaN(valores[0]) || isNaN(valores[1]) || isNaN(valores[2]) || isNaN(valores[3]) ) {
+                    showAlert("se descarta de la prueba a " + lines[i], true)
+                  }
+                  else {
+                    let claseID = clasificarIris( [ parseFloat(valores[0]), parseFloat(valores[1]), parseFloat(valores[2]), parseFloat(valores[3]) ] );
+                    if (claseID==null) {
+                      mostrarFailure("Aborta por recibir clase NULL!")
+                      return 
+                    }
+                    // registra performance
+                    claseModelo = parseFloat(claseID)
+                    claseReal = parseFloat(valores[4])
+                    if ( claseModelo == claseReal ) {
+                        resOK = "OK";
+                        cantOK = cantOK + 1;
+                    } else {
+                        resOK = "MAL";
+                        cantMAL = cantMAL + 1;
+                    }
+                    if (!(claseReal in matrizConf)) {
+                      matrizConf[claseReal] = {}
+                    }
+                    if (!(claseModelo in matrizConf[claseReal])) {
+                      matrizConf[claseReal][claseModelo] = 1.0
+                    }
+                    else {
+                      matrizConf[claseReal][claseModelo] += 1.0
+                    }
+                    linesRes = linesRes + lines[i] + ";Modelo=" + claseID + "->" + resOK + "\n";              
+                  }
+                }
+              }
+              document.getElementById("datosPrueba").value = linesRes;
+              resPrueba.innerText  =  calcMetricasClasificacion(cantOK, cantMAL, matrizConf);
+              showAlert("Fin de probar modelo.", true)
+
+            }
+  
+            loadModel();
+        </script>
+</body>
+
+</html>

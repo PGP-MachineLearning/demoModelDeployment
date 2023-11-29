@@ -1,0 +1,21 @@
+
+1) Construir el modelo ejecutando el script <construir-RNA-MLP-IRIS.ipynb> completo y guardarlo en el drive.
+
+-Opción A) Acceder con AppsScripts con TensorFlow.js:
+A.1) Convertir el modelo guardado en el paso (1) para poder ser usado con TensorFlow.js usando el script <A1-Exportar-Modelo-a-TFjs.ipynb> 
+A.2) Accder a AppsScripts accediendo a https://script.google.com/home/my
+A.3) Crear nuevo proyecto e indicar el nombre que se desee.
+A.4) Copiar en <Code.gs> todo el contenido del archivo del mismo nombre disponible en subdirectorio <A2-AppScript-files>
+A.5) Copiar File Ids de la ejecución (A.1) en las constantes del <Code.gs> copiado.
+A.6) Agregar archivo HTML y renombrarlo a "index.html".
+A.7) Copiar en <index.html> todo el contenido del archivo del mismo nombre disponible en subdirectorio <A2-AppScript-files>
+A.8) Realizar la publicación del proyecto usando Deploy > New Deployment y eligiendo tipo "Web App" (elegir nombre y permisos según su preferencia). Luego, se debe autorizar el acceso para que pueda acceder al drive.
+A.9) Abrir la URL que se asigna para el proyecto y probar las opciones de la página.
+
+-Opción B) Crear Web API con TF.Keras con Flask:
+B.1) Crear cuenta en https://dashboard.ngrok.com/signup para crear Web API pública
+B.2) Ejecutar script <B1-Crear-Model-Web-API.ipynb> ingresando los datos solicitados.
+B.3) Probar Web API pública ejecutando <B2-Probar-Model-Web-API-publica.ipynb> con la URL pública obtenida de (B.1).
+
+
+
