@@ -42,13 +42,14 @@
         <script>
 
             let model = null;
+            let modelCLASES = [];
             let logText = document.getElementById("logText")
             let resText = document.getElementById("resultText")
             let resPrueba = document.getElementById("resultPrueba")
 
             // funciones auxiliares para mostrar log
-            function mostrarFailure(error) {
-                console.error(error);
+            function mostrarFailure(msg) {
+                console.error(msg);
                 showAlert( "\n\tERROR: "+ msg + "\n" );
             }
 
@@ -70,6 +71,10 @@
                       //showAlert(modelFiles[1])
                       model = await tf.loadLayersModel(tf.io.browserFiles([modelJson, modelWeights]))
                       model.summary();
+                      // obtiene los nombres de las clases (si están definidas)
+                      modelCLASES = modelFiles[2]
+                      showAlert("Clases definidas: " + modelCLASES + " -> " + Object.keys(modelCLASES).length)
+                      console.log(typeof modelCLASES);
                       if (model != null) {
                         showAlert("Modelo cargado.", true);                           
                       }
@@ -119,7 +124,15 @@
                       // usa salida softmax (devuelve valores por clase, se tiene que usar más grande)
                       claseID = indexOfMax(resModel);
                     }
-                    return claseID;
+                    auxLen = Object.keys(modelCLASES).length
+                    if ((auxLen > 0) && (claseID < auxLen)) {
+                      modelDesc = modelCLASES[claseID];
+                    }
+                    else {
+                      modelDesc = claseID;
+                    }
+
+                    return [claseID, modelDesc];
                   }
               } else {
                   // el modelo todavía no está listo para usar
@@ -176,9 +189,12 @@
             function clasificarEjemplo() {
               // define datos de entrada
               const x = [ parseFloat(document.getElementById("inp1").value), parseFloat(document.getElementById("inp2").value), parseFloat(document.getElementById("inp3").value), parseFloat(document.getElementById("inp4").value) ];     
-              const claseID = clasificarIris(x);
-              if (claseID != null) {
-                resText.innerText = "--> Clase " + claseID
+              const resIris = clasificarIris(x);
+              if (resIris != null) {
+                resText.innerText = "--> Clase " + resIris[0] + " - " + resIris[1];
+              }
+              else {
+                resText.innerText = "NULL!"
               }
             }
 
@@ -205,14 +221,14 @@
                     showAlert("se descarta de la prueba a " + lines[i], true)
                   }
                   else {
-                    let claseID = clasificarIris( [ parseFloat(valores[0]), parseFloat(valores[1]), parseFloat(valores[2]), parseFloat(valores[3]) ] );
-                    if (claseID==null) {
+                    let resIris = clasificarIris( [ parseFloat(valores[0]), parseFloat(valores[1]), parseFloat(valores[2]), parseFloat(valores[3]) ] );
+                    if (resIris==null) {
                       mostrarFailure("Aborta por recibir clase NULL!")
                       return 
                     }
                     // registra performance
-                    claseModelo = parseFloat(claseID)
-                    claseReal = parseFloat(valores[4])
+                    claseModelo = parseFloat(resIris[0]);
+                    claseReal = parseFloat(valores[4]);
                     if ( claseModelo == claseReal ) {
                         resOK = "OK";
                         cantOK = cantOK + 1;
