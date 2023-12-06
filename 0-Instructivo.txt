@@ -9,7 +9,7 @@ A.4) Copiar en <Code.gs> todo el contenido del archivo del mismo nombre disponib
 A.5) Copiar File Ids de la ejecución (A.1) en las constantes del <Code.gs> copiado.
 A.6) Agregar archivo HTML y renombrarlo a "index.html".
 A.7) Copiar en <index.html> todo el contenido del archivo del mismo nombre disponible en subdirectorio <A2-AppScript-files>
-A.8) Realizar la publicación del proyecto usando Deploy > New Deployment y eligiendo tipo "Web App" (elegir nombre y permisos según su preferencia). Luego, se debe autorizar el acceso para que pueda acceder al drive.
+A.8) Realizar la publicación del proyecto usando Deploy/Implementación > New Deployment/Nueva implementación y eligiendo tipo "Web App" (elegir nombre y permisos según su preferencia). Luego, se debe autorizar el acceso para que pueda acceder al drive.
 A.9) Abrir la URL que se asigna para el proyecto y probar las opciones de la página.
 
 -Opción B) Crear Web API con TF.Keras con Flask:
