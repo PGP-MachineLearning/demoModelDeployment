@@ -18,5 +18,8 @@ B.2) Ejecutar script <B1-Crear-Model-Web-API.ipynb> ingresando los datos solicit
 B.3) Probar Web API pública ejecutando <B2-Probar-Model-Web-API-publica.ipynb> con la URL pública obtenida de (B.2).
 B.4) Probar Web Page pública ejecutando URL indicada al ejecutar (B.2).
 
-
+-Opción C) Crear GoogleSheet:
+C.1) Ejecutar script <C1-Exportar-Modelo-a-GoogleSheet.ipynb> dando los permisos correspondientes.
+C.2) Abrir la planilla creada.
+Nota: funciona para redes sencillas solamente.
 
