@@ -69,8 +69,8 @@
                       //showAlert(modelFiles[0])
                       const modelWeights = new File([Uint8Array.from(modelFiles[1])], "group1-shard1of1.bin")
                       //showAlert(modelFiles[1])
-                      model = await tf.loadLayersModel(tf.io.browserFiles([modelJson, modelWeights]))
-                      model.summary();
+                      model = await tf.loadGraphModel(tf.io.browserFiles([modelJson, modelWeights]))
+                      //model.summary();
                       // obtiene los nombres de las clases (si están definidas)
                       modelCLASES = modelFiles[2]
                       showAlert("Clases definidas: " + modelCLASES + " -> " + Object.keys(modelCLASES).length)

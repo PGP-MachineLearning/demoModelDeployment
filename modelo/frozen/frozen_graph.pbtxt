@@ -1,0 +1,329 @@
+node {
+  name: "x"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: -1
+        }
+        dim {
+          size: 4
+        }
+      }
+    }
+  }
+}
+node {
+  name: "RNA_1/hidd_1_1/Cast/ReadVariableOp/resource"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 4
+          }
+          dim {
+            size: 12
+          }
+        }
+        tensor_content: "\234_\375>\236\335\004\275\353\317\266\275W\320\262\275N\224\304\276c\315\326\276o\204V>Me\242>g\3167\277\270\311\003\277\234\253\371>\232D\260\276L$\020\277\307\343\021?\344\276\272\276\362r\227=\026\020\035\277P\276\033\277\005!\231\276\362A\006?O\201O\276\"\253\320\2745\374\r>\271\177\014\277\005\343X?\034<\006\277\371\202E>;\303>\276\355$\277>\026B\035?R@\026?\355\001*\277-\020w?!\353\023?/\275\271=\204\366x?\221/\332\275\273\032\333\275b\205L?oC\313\276\240It?&\331\250?\324_\246\276v\305`\277:\323\206?\323=(?\366\336\263\277\320%\232?"
+      }
+    }
+  }
+}
+node {
+  name: "RNA_1/hidd_1_1/Add/ReadVariableOp/resource"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 12
+          }
+        }
+        tensor_content: "\323\276\312\275\304\362J>\255\241J\277.4\354>j\332\233\276\306\2704\277\\\017\320\276/q\003?\t&\'\277|`\005\277\2751\241>M\275\032\277"
+      }
+    }
+  }
+}
+node {
+  name: "RNA_1/output_1/Cast/ReadVariableOp/resource"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 12
+          }
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\347\214\267\276\256u\343\276=`\307>\240\375M>wHz\275\n\240A?\314\234\355\275\032\216\\\276/\271\356\276\322\252\205>\363\000`>\r\272/?{\030l?@\344\245\276\253G\262\275$\211\345\2765-\311<]_\364\276c0\374\276\225}}>\026\307\273>{\244R\277\200\032!\277\004}W?F\345\205\277\005@\226>?\024 ?N\310\034?\272\265\372\276\006\375\302?\322\333\312>\262\372\177\277\327\366\026>\241\373\253\277\206\007\035\277\275G\234?\220\017\366\273\017\251\360\276NM\314\276\026f\232=\033\205;=\'\270I=\316>\222>\273\224\356\276\364S]\276\305s6\277\004\333\r\275\374\241\030?"
+      }
+    }
+  }
+}
+node {
+  name: "RNA_1/output_1/Add/ReadVariableOp/resource"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\005J\'\277\240\257\325=\305\026\302>J\033\000\277"
+      }
+    }
+  }
+}
+node {
+  name: "RNA_1/hidd_1_1/Cast/ReadVariableOp"
+  op: "Identity"
+  input: "RNA_1/hidd_1_1/Cast/ReadVariableOp/resource"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_has_manual_control_dependencies"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "RNA_1/hidd_1_1/MatMul"
+  op: "MatMul"
+  input: "x"
+  input: "RNA_1/hidd_1_1/Cast/ReadVariableOp"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "grad_a"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "grad_b"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "transpose_a"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "transpose_b"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "RNA_1/hidd_1_1/Add/ReadVariableOp"
+  op: "Identity"
+  input: "RNA_1/hidd_1_1/Add/ReadVariableOp/resource"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_has_manual_control_dependencies"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "RNA_1/hidd_1_1/Add"
+  op: "AddV2"
+  input: "RNA_1/hidd_1_1/MatMul"
+  input: "RNA_1/hidd_1_1/Add/ReadVariableOp"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "RNA_1/output_1/Cast/ReadVariableOp"
+  op: "Identity"
+  input: "RNA_1/output_1/Cast/ReadVariableOp/resource"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_has_manual_control_dependencies"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "RNA_1/output_1/MatMul"
+  op: "MatMul"
+  input: "RNA_1/hidd_1_1/Add"
+  input: "RNA_1/output_1/Cast/ReadVariableOp"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "grad_a"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "grad_b"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "transpose_a"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "transpose_b"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "RNA_1/output_1/Add/ReadVariableOp"
+  op: "Identity"
+  input: "RNA_1/output_1/Add/ReadVariableOp/resource"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_has_manual_control_dependencies"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "RNA_1/output_1/Add"
+  op: "AddV2"
+  input: "RNA_1/output_1/MatMul"
+  input: "RNA_1/output_1/Add/ReadVariableOp"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "RNA_1/output_1/Softmax"
+  op: "Softmax"
+  input: "RNA_1/output_1/Add"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "NoOp"
+  op: "NoOp"
+  input: "^RNA_1/hidd_1_1/Add/ReadVariableOp"
+  input: "^RNA_1/hidd_1_1/Cast/ReadVariableOp"
+  input: "^RNA_1/output_1/Add/ReadVariableOp"
+  input: "^RNA_1/output_1/Cast/ReadVariableOp"
+  attr {
+    key: "_has_manual_control_dependencies"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "Identity"
+  op: "Identity"
+  input: "RNA_1/output_1/Softmax"
+  input: "^NoOp"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+versions {
+  producer: 1766
+}

@@ -19,10 +19,4 @@ B.3) Probar Web API pública ejecutando <B2-Probar-Model-Web-API-publica.ipynb> c
 B.4) Probar Web Page pública ejecutando URL indicada al ejecutar (B.2).
 
 
--Opción C) Crear Web API con TensorFlow Serving
-C.1) Crear cuenta en https://dashboard.ngrok.com/signup para crear Web API pública (si todavía no se creo).
-C.2) Ejecutar script <C1-Crear-Model-Server.ipynb> ingresando los datos solicitados.
-C.3) Probar Web API pública ejecutando <C2-Probar-Model-Server-publico.ipynb> con la URL pública obtenida de (C.2).
-
-
 
