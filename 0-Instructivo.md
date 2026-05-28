@@ -24,7 +24,7 @@ Luego hay dos posibilidades para publicar la página:
 7. Realizar la publicación del proyecto usando la opción de *Deploy* / *Implementación* > *New Deployment* / *Nueva implementación* y eligiendo tipo "**Web App**" (elegir nombre y permisos según su preferencia). Ante la solicitud se debe autorizar el acceso para que pueda acceder al drive.
 9. Abrir la URL que se asigna para el proyecto.
 
-*Nota: por razones de seguridad la página se debe acceder desde un navegador donde se haya accedido con una cuenta de Google.*
+     *Nota: por razones de seguridad la página se debe acceder desde un navegador donde se haya accedido con una cuenta de Google.*
 
 #### Ab - utilizar directamente GitHub para publicar la página:
 1. Crear un repositorio en [Github](https://github.com/) con el nombre que se desee.
@@ -46,5 +46,5 @@ Luego hay dos posibilidades para publicar la página:
 1) Ejecutar script <**C1-Exportar-Modelo-a-GoogleSheet.ipynb**> dando los permisos correspondientes.
 2) Abrir la planilla creada en el paso anterior.
 
-*Nota: por ahora funciona para redes MLP solamente.*
+     *Nota: por ahora funciona para redes MLP solamente.*
 
