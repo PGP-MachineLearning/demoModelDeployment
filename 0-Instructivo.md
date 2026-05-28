@@ -16,13 +16,13 @@ Luego hay dos posibilidades para publicar la página:
 
 #### Aa - utilizar AppsScripts para publicar la página:
 1. Acceder a [AppsScripts](https://script.google.com/home/my)
-2. Crear nuevo proyecto e indicar el nombre que se desee (por ejemplo ejemplo "IRIS).
-3. Copiar en <**Code.gs**> todo el contenido del archivo del mismo nombre disponible en subdirectorio <**Aa-AppScript-files**>
+2. Crear nuevo proyecto e indicar el nombre que se desee (por ejemplo "IRIS).
+3. Copiar en <**Code.gs**> todo el contenido del archivo del mismo nombre disponible en el subdirectorio <**Aa-AppScript-files**>
 4. Copiar los ``` File Ids ```  de la ejecución de (*A1*) en las constantes del <Code.gs> copiado.
 5. Agregar archivo HTML y renombrarlo a <**index.html**>.
-6. Copiar en <**index.html**> todo el contenido del archivo del mismo nombre disponible en subdirectorio <**Aa-AppScript-files**>
-7. Realizar la publicación del proyecto usando Deploy/Implementación > New Deployment/Nueva implementación y eligiendo tipo "**Web App**" (elegir nombre y permisos según su preferencia). Luego, se debe autorizar el acceso para que pueda acceder al drive.
-8. Abrir la URL que se asigna para el proyecto y probar las opciones de la página.
+6. Copiar en <**index.html**> todo el contenido del archivo del mismo nombre disponible en el subdirectorio <**Aa-AppScript-files**>
+7. Realizar la publicación del proyecto usando la opción de *Deploy* / *Implementación* > *New Deployment* / *Nueva implementación* y eligiendo tipo "**Web App**" (elegir nombre y permisos según su preferencia). Ante la solicitud se debe autorizar el acceso para que pueda acceder al drive.
+9. Abrir la URL que se asigna para el proyecto.
 
 *Nota: por razones de seguridad la página se debe acceder desde un navegador donde se haya accedido con una cuenta de Google.*
 
@@ -30,17 +30,17 @@ Luego hay dos posibilidades para publicar la página:
 1. Crear un repositorio en [Github](https://github.com/) con el nombre que se desee.
 2. Subir carpeta de exportado en el paso (*A1*) como TensorFlow.js al repositorio creado.
 3. Editar archivo <**index.html**> disponible en subdirectorio <**Ab-GitHub**> indicando:
-* ``` const Model_URL = ``` URL "raw" obtenida del archivo <**model.js**> subido al respositorio creado.  
+* ``` const Model_URL = ``` URL de la "vista RAW" obtenida para el archivo <**model.js**> que subido al repositorio creado.  
 * ``` const Model_CLASES = ``` definición de clases obtenida de la ejecución de (**A1**) para exportar a TF.js. 
 4. Subir archivo "<**index.html**> editado al repositorio creado.
 5. Publicar página <**index.html**> subida en forma pública usando https://raw.githack.com/ o un sitio similar.
-6. Abrir URL asignada y probar las opciones de la página
+6. Abrir URL asignada en el paso anterior.
 
 ### Alternativa B- TF.Keras con Flask:
 1. Crear cuenta en [ngrok](https://dashboard.ngrok.com/signup) para crear Web API pública.
 2. Ejecutar script <**B1-Crear-Model-Web-API.ipynb**> ingresando los datos solicitados.
-3. Probar Web API pública ejecutando <**B2-Probar-Model-Web-API-publica.ipynb**> con la URL pública obtenida en el paso 2.
-4. Probar Web Page pública ejecutando URL indicada al ejecutar el paso 2.
+3. Probar Web API pública ejecutando <**B2-Probar-Model-Web-API-publica.ipynb**> con la URL pública del web service obtenida en el paso 2.
+4. Abrir URL asignada a la Web Page pública indicada al ejecutar el paso 2.
 
 ### Alternativa C- GoogleSheet:
 1) Ejecutar script <**C1-Exportar-Modelo-a-GoogleSheet.ipynb**> dando los permisos correspondientes.
