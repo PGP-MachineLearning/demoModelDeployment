@@ -8,4 +8,4 @@ Ejemplos de cómo se puede realizar el deployment de modelo TensorFlow+Keras par
 4. Subir todos los archivos de este repositorio dentro de la carpeta creada en el paso anterior. 
 
 ## Uso
-Seguir los pasos indicados en el archivo <**0-Instructivo.txt**>.
+Seguir los pasos indicados en el archivo <**0-Instructivo.md**>.
